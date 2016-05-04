@@ -12,6 +12,8 @@ int main(int argc, char* argv[])
 
 	time_t	timer_begin, timer_end;
 
+	system("sudo modprobe bcm2835-v4l2");
+
 	VideoCapture cap(0); // open the video camera no. 0
 
 	if(!cap.isOpened())  // if not success, exit program
