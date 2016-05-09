@@ -9,4 +9,4 @@ find_package(OpenCV REQUIRED)
 include_directories("include" ${OpenCV_INCLUDE_DIRS})
 
 add_executable(ball ${SOURCE_FILES})
-target_link_libraries(ball ${OpenCV_LIBS})
+target_link_libraries(ball ${OpenCV_LIBS} pthread pigpio rt)
