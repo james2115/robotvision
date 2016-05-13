@@ -14,6 +14,7 @@
 #define __gearbox_H__
 
 #include <exception>
+#include <list>
 
 /* -------------------------------------------------------------------- */ /*!
 
@@ -90,27 +91,86 @@ public:
 
 /* -------------------------------------------------------------------- */ /*!
 
-	Classes.
+	\class		gear
+
+	\details
 
 */ /* --------------------------------------------------------------------- */
 
-class ratio
+class gear
 {
 private:
+	int		teeth_;						/*!< Number of teeth on this gear.	*/
+	double	rotation_;					/*!< Angle of rotation per tooth.	*/
+
+	gear   *parent_;					/*!< Gear linked to this gear.		*/
+	gear   *child_;						/*!< Gear this gear is linked to.	*/
 
 public:
-	ratio();
-	virtual ~ratio();
+	gear(int _teeth);
+	virtual ~gear();
+
+	void	link(gear *_gear);
 };
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\class		wheel
+
+	\details
+
+*/ /* --------------------------------------------------------------------- */
+
+class wheel
+{
+private:
+	double	circumference_;				/*!< Wheel circumference in mm.		*/
+
+public:
+	wheel(double _radius);
+	virtual ~wheel();
+};
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\class		shaft
+
+	\details
+
+*/ /* --------------------------------------------------------------------- */
+
+class shaft
+{
+private:
+	std::list<gear *>	gears_;			/*!< List of gears on this shaft.	*/
+	std::list<wheel *>	wheels_;		/*!< List of wheels on this shaft.	*/
+
+public:
+	shaft();
+	virtual ~shaft();
+	
+	void	add(gear *_gear);
+	void	add(wheel *_wheel);
+};
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\class		gearbox
+
+	\details
+
+*/ /* --------------------------------------------------------------------- */
 
 class gearbox 
 {
 private:
+	std::list<shaft *>	shafts_;		/*!< List of shafts in this gearbox	*/
 
 public:
 	gearbox();
 	virtual ~gearbox();
 
+	void	add(shaft *_shaft);
 };
 
 /* -------------------------------------------------------------------- */ /*!

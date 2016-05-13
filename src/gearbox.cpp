@@ -18,6 +18,59 @@
 
 #include "gearbox.h"
 
+void test(void)
+{
+	lhsgearbox = new gearbox();
+
+	/* Define the motor first */
+
+	motorshaft = new shaft();
+
+	motorgear = new gear(14);
+
+//	motorgear->set();
+	
+	motorshaft->add(motorgear);
+
+	lhsgearbox->add(motorshaft);
+
+	/* Now define the 1st level step down */
+
+	stepshaft = new shaft();
+
+	stepgearbase = new gear(50);
+
+	stepgearbase->link(motorgear);
+
+	stepshaft->add(stepgearbase);
+
+	stepgearout = new gear(19);
+
+	stepshaft->add(stepgearout);
+
+	lhsgearbox->add(stepshaft);
+
+	/* Now define the final drive shaft */
+
+	outputshaft = new shaft();
+
+	outputgear = new gear(45);
+
+	outputgear->link(stepgearout);
+
+	outputshaft->add(outputgear);
+
+	/* and the wheel */
+
+	drivewheel = new wheel(4 * INCHES);
+
+	outputshaft->add(drivewheel);
+
+	/* Add the output to the gearbox */
+
+	lhsgearbox->add(outputshaft);
+}
+
 /* -------------------------------------------------------------------- */ /*!
 
 	
