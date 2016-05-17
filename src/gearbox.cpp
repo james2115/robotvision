@@ -92,28 +92,38 @@ const char *gearboxerr::errors_[] =
 
 /* -------------------------------------------------------------------- */ /*!
 
-	\details
-
-	\attention
-
-	\verbatim
-	\endverbatim
+	\details	gear constructor.
 
 	\author		James Fisher (james@waters-fisher.id.au)
-	\date		
+	\date		Tuesday 17 May 2016 03:36:38pm
 
-	\param
-
-	\throw
-
-	\retval
-
-	\see
-	\todo
+	\param		_teeth			Number of teeth on the gear.
 
 */ /* --------------------------------------------------------------------- */
 
-ratio::ratio()
+gear::gear(int _teeth)
+{
+	ENTRY();
+
+	teeth_	  = _teeth;
+	rotation_ = 360.0f / _teeth;
+
+	parent_ = NULL;
+	child_  = NULL;
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	gear destructor.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 17 May 2016 03:39:01pm
+
+*/ /* --------------------------------------------------------------------- */
+
+gear::~gear()
 {
 	ENTRY();
 
@@ -122,53 +132,146 @@ ratio::ratio()
 
 /* -------------------------------------------------------------------- */ /*!
 
-	\details
-
-	\attention
-
-	\verbatim
-	\endverbatim
+	\details	Link this gear to another gear.
 
 	\author		James Fisher (james@waters-fisher.id.au)
-	\date		
+	\date		Tuesday 17 May 2016 03:39:48pm
 
-	\param
-
-	\throw
-
-	\retval
-
-	\see
-	\todo
+	\param		_gear		Pointer to the \ref gear to link to.
 
 */ /* --------------------------------------------------------------------- */
 
-ratio::~ratio()
+void gear::link(gear *_gear)
+{
+	ENTRY();
+
+	/* TODO add this to the link list. */
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	wheel constructor.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 17 May 2016 03:41:39pm
+
+	\param		_radius		Radius of the wheel in mm.
+
+*/ /* --------------------------------------------------------------------- */
+
+wheel::wheel(double _radius)
+{
+	ENTRY();
+
+	circumference_ = 2 * PI * _radius;
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	wheel destructor.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 17 May 2016 03:42:26pm
+
+*/ /* --------------------------------------------------------------------- */
+
+wheel::~wheel()
 {
 	ENTRY();
 
 	EXIT();
 }
+
 /* -------------------------------------------------------------------- */ /*!
 
-	\details
-
-	\attention
-
-	\verbatim
-	\endverbatim
+	\details	shaft constructor.
 
 	\author		James Fisher (james@waters-fisher.id.au)
-	\date		
+	\date		Tuesday 17 May 2016 03:43:18pm
 
-	\param
+*/ /* --------------------------------------------------------------------- */
 
-	\throw
+shaft::shaft()
+{
+	ENTRY();
 
-	\retval
+	EXIT();
+}
 
-	\see
-	\todo
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	shaft destructor.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 17 May 2016 03:43:55pm
+
+*/ /* --------------------------------------------------------------------- */
+
+shaft::~shaft()
+{
+	ENTRY();
+
+	for(auto i : gears_)
+	{
+	}
+
+	for(auto i : wheels_)
+	{
+	}
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	Add a \ref gear to this shaft.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 17 May 2016 03:44:39pm
+
+	\param		_gear		Pointer to the gear to add to the shaft.
+
+*/ /* --------------------------------------------------------------------- */
+
+void shaft::add(gear *_gear)
+{
+	ENTRY();
+
+	gears_.push_front(_gear);
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	Add a \ref wheel to this shaft.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 17 May 2016 03:45:41pm
+
+	\param		_wheel		Pointer to the wheel to add to the shaft.
+
+*/ /* --------------------------------------------------------------------- */
+
+void shaft::add(wheel *_wheel)
+{
+	ENTRY();
+
+	wheels_.push_front(_wheel);
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	gearbox constructor.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 17 May 2016 03:46:34pm
 
 */ /* --------------------------------------------------------------------- */
 
@@ -181,30 +284,40 @@ gearbox::gearbox()
 
 /* -------------------------------------------------------------------- */ /*!
 
-	\details
-
-	\attention
-
-	\verbatim
-	\endverbatim
+	\details	gearbox destructor.
 
 	\author		James Fisher (james@waters-fisher.id.au)
-	\date		
-
-	\param
-
-	\throw
-
-	\retval
-
-	\see
-	\todo
+	\date		Tuesday 17 May 2016 03:47:04pm
 
 */ /* --------------------------------------------------------------------- */
 
 gearbox::~gearbox()
 {
 	ENTRY();
+
+	for(auto i : shafts_)
+	{
+	}
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	Add a shaft to this gearbox.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 17 May 2016 03:47:27pm
+
+	\param		_shaft		Pointer to the shaft to add.
+
+*/ /* --------------------------------------------------------------------- */
+
+void gearbox::add(shaft *_shaft)
+{
+	ENTRY();
+
+	shafts_.push_front(_shaft);
 
 	EXIT();
 }
