@@ -106,7 +106,8 @@ gear::gear(int _teeth)
 	ENTRY();
 
 	teeth_	  = _teeth;
-	rotation_ = 360.0f / _teeth;
+
+	rotation_ = 1.0f / teeth_;
 
 	parent_ = NULL;
 	child_  = NULL;
@@ -132,6 +133,26 @@ gear::~gear()
 
 /* -------------------------------------------------------------------- */ /*!
 
+	\details	Keep track of the shaft this wheel has been added to.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 28 June 2016 03:49:16P	
+
+	\param		_shaft		Shaft this wheel has been added to.
+
+*/ /* --------------------------------------------------------------------- */
+
+void gear::add(shaft *_shaft)
+{
+	ENTRY();
+
+	shaft_ = _shaft;
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
 	\details	Link this gear to another gear.
 
 	\author		James Fisher (james@waters-fisher.id.au)
@@ -145,7 +166,9 @@ void gear::link(gear *_gear)
 {
 	ENTRY();
 
-	/* TODO add this to the link list. */
+	child_ = _gear;
+
+	_gear->parent = this;
 
 	EXIT();
 }
@@ -165,7 +188,27 @@ wheel::wheel(double _radius)
 {
 	ENTRY();
 
-	circumference_ = 2 * PI * _radius;
+	circumference_ = 2.0f * PI * _radius;
+
+	EXIT();
+}
+
+/* -------------------------------------------------------------------- */ /*!
+
+	\details	Keep track of the shaft this wheel has been added to.
+
+	\author		James Fisher (james@waters-fisher.id.au)
+	\date		Tuesday 28 June 2016 03:49:16P	
+
+	\param		_shaft		Shaft this wheel has been added to.
+
+*/ /* --------------------------------------------------------------------- */
+
+void wheel::add(shaft *_shaft)
+{
+	ENTRY();
+
+	shaft_ = _shaft;
 
 	EXIT();
 }
@@ -243,6 +286,8 @@ void shaft::add(gear *_gear)
 
 	gears_.push_front(_gear);
 
+	_gear->add(this);
+
 	EXIT();
 }
 
@@ -262,6 +307,8 @@ void shaft::add(wheel *_wheel)
 	ENTRY();
 
 	wheels_.push_front(_wheel);
+
+	_wheel->add(this);
 
 	EXIT();
 }
@@ -317,7 +364,7 @@ void gearbox::add(shaft *_shaft)
 {
 	ENTRY();
 
-	shafts_.push_front(_shaft);
+	shaft_.push_front(_shaft);
 
 	EXIT();
 }

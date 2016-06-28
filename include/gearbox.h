@@ -22,6 +22,8 @@
 
 */ /* --------------------------------------------------------------------- */
 
+#define INCHES	25.4f
+
 #define gearboxERR(_x) gearboxerrlog((char *) __FILE__, __LINE__, (char *) __FUNCTION__, gearboxerr::_x)
 
 /* -------------------------------------------------------------------- */ /*!
@@ -106,10 +108,13 @@ private:
 	gear   *parent_;					/*!< Gear linked to this gear.		*/
 	gear   *child_;						/*!< Gear this gear is linked to.	*/
 
+	shaft  *shaft_;						/*!< Shaft this gear is on.			*/
+
 public:
 	gear(int _teeth);
 	virtual ~gear();
 
+	void	add(shaft *_shaft);
 	void	link(gear *_gear);
 };
 
@@ -126,9 +131,13 @@ class wheel
 private:
 	double	circumference_;				/*!< Wheel circumference in mm.		*/
 
+	shaft  *shaft_;						/*!< Shaft this gear is on.			*/
+
 public:
 	wheel(double _radius);
 	virtual ~wheel();
+
+	void	add(shaft *_shaft);
 };
 
 /* -------------------------------------------------------------------- */ /*!
